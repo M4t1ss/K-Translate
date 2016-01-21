@@ -1,6 +1,4 @@
-﻿
-Provide up to four machine translations:
-<form action="?">
+﻿<form action="?">
 	<div style="float: left; margin-left:5px;">
 		Source language:<br/>
 		<select class="form-control" name="srclang" />
@@ -15,7 +13,7 @@ Provide up to four machine translations:
 			<option>Latvian</option>
 		</select>
 	</div>
-	<br style="clear: both;"/>
+	<br style="clear: both;"/><br/>
 	<div class="mt">
 		Source sentence:<br/>
 		<textarea class="form-control" name="src" placeholder="Required"></textarea><br/>

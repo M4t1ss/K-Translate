@@ -1,15 +1,16 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="K-Translate - Machine Translation Combination">
-  <meta name="author" content="Matīss Rikters">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="K-Translate - Machine Translation Combination">
+	<meta name="author" content="Matīss Rikters">
 	<title>K-Translate - Machine Translation Combination</title>
 	<link href="css/style.css" rel="stylesheet">
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+	<link href="css/chunkStyle.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-theme.min.css" rel="stylesheet">
 </head>
 <body role="document">
 <nav class="navbar navbar-inverse navbar-fixed-top">

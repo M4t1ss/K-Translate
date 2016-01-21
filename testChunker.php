@@ -1,29 +1,20 @@
-﻿<?php
-//Get input data
-$sentences = array();
-if($_GET['mt1'] != '')
-	$sentences[] = $_GET['mt1'];
-if($_GET['mt2'] != '')
-	$sentences[] = $_GET['mt2'];
-if($_GET['mt3'] != '')
-	$sentences[] = $_GET['mt3'];
-if($_GET['mt4'] != '')
-	$sentences[] = $_GET['mt4'];
-if($_GET['src'] != '')
-	$src = $_GET['src'];
-
-//Parse input source sentence
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-	$output = shell_exec('exp.bat "'.$src.'"');
-	$boom = explode("\n", $output);
-	$parsed = $boom[4];
-} else {
-    echo 'This is a server not using Windows!';
-}
-
-//Chunk input data
-if(isset($parsed) && $parsed != ""){
+﻿<html>
+<head>
+	<title>Chunker</title>
+	<link type="text/css" href="style.css" rel="stylesheet">
+</head>
+<body>
+	<b>Input:</b><br/>
+	<form action="testChunker.php">
+		<textarea name="parsedText"><?php if(isset($_GET["parsedText"])) echo $_GET["parsedText"] ?></textarea>
+		<br/>
+		<input type="submit" value="Chunk!"/>
+	</form>
+<?php
+if(isset($_GET['parsedText']) && $_GET['parsedText'] != ""){
 	include('chunkParseTree.php');
+
+	$parsed = $_GET["parsedText"];
 	$parsed = str_replace("\n", "", $parsed);
 	$parsed = substr($parsed, 2);
 	$parsed = substr($parsed, 0, -2);
@@ -33,7 +24,11 @@ if(isset($parsed) && $parsed != ""){
 	$parsed = str_replace("))", ") )", $parsed);
 
 	$tokens = explode(" ", $parsed);
-	
+
+	// var_dump($tokens);
+
+
+
 	foreach($tokens as $token){
 		if(strcmp(substr($token, 0, 1), "(") == 0){
 			//nāk jauna frāze, jātaisa jauna lapa
@@ -54,15 +49,28 @@ if(isset($parsed) && $parsed != ""){
 			}
 
 		}elseif(strcmp(substr($token, -1, 1), ")") == 0){
-			//frāze beidzas - ja bija vārds, jāpievieno pie aktuālās lapas, ja nē, jāiet pie vecāka
+			//frāze beidzas
+			//ja bija vārds, jāpievieno pie aktuālās lapas, ja nē, jāiet pie vecāka
 			$tokenWord = substr($token, 0, -1);
 			if(strlen($tokenWord) > 0){
 				$currentNode->setWord($tokenWord);
 			}
 			if($currentNode->getParent() != null)
 				$currentNode = $currentNode->getParent();
+
 		}
 	}
+
+	// Izdrukā visu koku
+	// var_dump($rootNode);
+
+	// Izdrukā teikumu secīgi
+	// echo $rootNode->traverse('inorder', '');
+	// echo "<br/><br/>";
+	
+	// Izdrukā teikumu pretējā secībā
+	// echo $rootNode->traverse('revorder', '');
+	// echo "<br/><br/>";
 	
 	$wordCount = str_word_count($rootNode->traverse('inorder', ''));
 	$chunkSize = ceil($wordCount/4);
@@ -78,6 +86,9 @@ if(isset($parsed) && $parsed != ""){
 	
 	$finalChunks = array_reverse($finalChunks);
 	
+	// Izdrukā gabalu izmēru
+	// var_dump($chunkSize);
+	
 	// Izdrukā teikuma gabalus
 	echo "<b>Chunks:</b><br/><div class='finalChunks'><ul>";
 	foreach($finalChunks as $finalChunk){
@@ -91,11 +102,12 @@ if(isset($parsed) && $parsed != ""){
 	$rootNode->printTree($rootNode);
 }
 
-//Choose output chunks
-	
-	echo "<b>Combined translation:</b><br/>";
-	echo "<div class='finalChunks'><ul>";
-	echo "<li>Preces tiek nogādātas ātri un efektīvi</li>";
-	echo "<li>no rūpnīcas pie lietotājiem, bieži vien arī citās valstīs.</li>";
-	echo "</ul></div>";
 ?>
+<br/>
+<br/>
+</body>
+</html>
+
+
+
+<?php

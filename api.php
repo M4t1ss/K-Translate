@@ -1,9 +1,4 @@
-﻿<?php
-
-
-?>
-Provide a sentence to translate:
-<form action="?">
+﻿<form action="?">
 	<div style="float: left; margin-left:5px;">
 		Source language:<br/>
 		<select class="form-control" name="srclang" />
@@ -17,6 +12,16 @@ Provide a sentence to translate:
 		<select class="form-control" name="trglang" />
 			<option>Latvian</option>
 		</select>
+	</div>
+	<br style="clear: both;"/><br/>
+	<div style="float: left; margin-left:5px;">
+		Use:<br/>
+		<div class="checkbox">
+			<label><input type="checkbox" name="google" >Google Translate</label>
+			<label><input type="checkbox" name="bing" >Bing Translator</label>
+			<label><input type="checkbox" name="yandex" >Yandex Translate</label>
+			<label><input type="checkbox" name="hugo" >Hugo</label>
+		</div>
 	</div>
 	<br style="clear: both;"/>
 	<div class="mt">

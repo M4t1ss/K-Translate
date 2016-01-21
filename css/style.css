@@ -1,0 +1,20 @@
+﻿ul{
+	list-style: none;
+}
+
+li{
+	display: inline;
+}
+
+textarea.form-control{
+	width: 300px;
+}
+
+select.form-control{
+	width: 300px;
+}
+
+.mt{
+	float: left;
+	margin: 5px;
+}

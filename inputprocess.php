@@ -92,8 +92,8 @@ if(isset($parsed) && $parsed != ""){
 	</div>
 	<br style="clear: both;"/><br/>
 	<div class="mt">
-		Source sentence:<br/>
-		<textarea class="form-control" name="src" placeholder="Required" readonly><?php
+		Source sentence chunks:<br/>
+		<textarea style="width:604px; height:300px;" class="form-control" name="src" placeholder="Required" readonly><?php
 		foreach($finalChunks as $finalChunk){
 			echo $finalChunk."\n";
 		}

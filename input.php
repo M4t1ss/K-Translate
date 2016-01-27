@@ -16,7 +16,7 @@
 	<br style="clear: both;"/><br/>
 	<div class="mt">
 		Source sentence:<br/>
-		<textarea class="form-control" name="src" placeholder="Required"></textarea><br/>
+		<textarea style="width:604px;" class="form-control" name="src" placeholder="Required"></textarea><br/>
 	</div>
 
 	<br style="clear: both;"/>

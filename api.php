@@ -26,7 +26,7 @@
 	<br style="clear: both;"/>
 	<div class="mt">
 		Source sentence:<br/>
-		<textarea class="form-control" name="sentence"></textarea><br/>
+		<textarea style="width:604px;" class="form-control" name="sentence"></textarea><br/>
 	</div>
 
 	<br style="clear: both;"/>

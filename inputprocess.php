@@ -1,16 +1,11 @@
-﻿<?php
+<?php
 //Get input data
-$sentences = array();
-if($_GET['mt1'] != '')
-	$sentences[] = $_GET['mt1'];
-if($_GET['mt2'] != '')
-	$sentences[] = $_GET['mt2'];
-if($_GET['mt3'] != '')
-	$sentences[] = $_GET['mt3'];
-if($_GET['mt4'] != '')
-	$sentences[] = $_GET['mt4'];
 if($_GET['src'] != '')
 	$src = $_GET['src'];
+if($_GET['srclang'] != '')
+	$srclang = $_GET['srclang'];
+if($_GET['trglang'] != '')
+	$trglang = $_GET['trglang'];
 
 //Parse input source sentence
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
@@ -78,6 +73,35 @@ if(isset($parsed) && $parsed != ""){
 
 	$finalChunks = array_reverse($finalChunks);
 
+}
+?>
+<form action="?">
+	<div style="float: left; margin-left:5px;">
+		Source language:<br/>
+		<select class="form-control" name="srclang"/>
+			<?php if($srclang == "English") echo "<option SELECTED>English</option>";?>
+			<?php if($srclang == "German") echo "<option SELECTED>German</option>"; ?>
+			<?php if($srclang == "French") echo "<option SELECTED>French</option>"; ?>
+		</select>
+	</div>
+	<div style="float: left; margin-left:5px;">
+		Target language:<br/>
+		<select class="form-control" name="trglang" />
+			<?php if($trglang == "Latvian") echo "<option SELECTED>Latvian</option>"; ?>
+		</select>
+	</div>
+	<br style="clear: both;"/><br/>
+	<div class="mt">
+		Source sentence:<br/>
+		<textarea class="form-control" name="src" placeholder="Required" readonly><?php
+		foreach($finalChunks as $finalChunk){
+			echo $finalChunk."\n";
+		}
+		?></textarea><br/>
+	</div>
+	<br style="clear: both;"/>
+<?php
+
 	// Izdrukā teikuma gabalus
 	echo "<b>Chunks:</b><br/><div class='finalChunks'><ul>";
 	foreach($finalChunks as $finalChunk){
@@ -89,14 +113,30 @@ if(isset($parsed) && $parsed != ""){
 	echo "<b>Tree:</b><br/>";
 	// Uzzīmē skaistu kociņu :)
 	$rootNode->printTree($rootNode);
-}
-
-//Choose output chunks
-
 	echo "<br style='clear:both;'/><br style='clear:both;'/>";
-	echo "<b>Combined translation:</b><br/>";
-	echo "<div class='finalChunks'><ul>";
-	echo "<li>Preces tiek nogādātas ātri un efektīvi</li>";
-	echo "<li>no rūpnīcas pie lietotājiem, bieži vien arī citās valstīs.</li>";
-	echo "</ul></div>";
 ?>
+	<div class="mt">
+		MT 1:<br/>
+		<textarea class="form-control" name="mt1" placeholder="Required"></textarea><br/>
+	</div>
+
+	<div class="mt">
+		MT 2:<br/>
+		<textarea class="form-control" name="mt2" placeholder="Required"></textarea><br/>
+	</div>
+	<br style="clear: both;"/>
+
+	<div class="mt">
+		MT 3:<br/>
+		<textarea class="form-control" name="mt3" placeholder="Optional"></textarea><br/>
+	</div>
+
+	<div class="mt">
+		MT 4:<br/>
+		<textarea class="form-control" name="mt4" placeholder="Optional"></textarea><br/>
+	</div>
+
+	<br style="clear: both;"/>
+	<input type="hidden" name="id" value="inputresult"/>
+	<input style="margin-left:5px;" type="submit" class="btn btn-sm btn-default" value="Combine!"/>
+</form>

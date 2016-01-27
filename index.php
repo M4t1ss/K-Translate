@@ -28,6 +28,7 @@
 	  <ul class="nav navbar-nav">
 		<li><a href="?id=input">Input translations to combine</a></li>
 		<li><a href="?id=api">Translate with online systems</a></li>
+		<li><a href="?id=settings">Settings</a></li>
 	  </ul>
 	</div><!--/.nav-collapse -->
   </div>
@@ -38,7 +39,7 @@
 		<h1>Machine Translation Combination</h1>
 	</div>
 	<?php
-    if (isset($_GET['id']) && in_array($_GET['id'], array('input','api','inputresult','apiresult')))
+    if (isset($_GET['id']) && in_array($_GET['id'], array('input','inputprocess','inputresult','api','apiresult','settings')))
       include $_GET['id'].".php";
     else
       include "input.php";

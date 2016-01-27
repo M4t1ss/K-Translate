@@ -7,4 +7,10 @@
   'de_lm' => 'KenLM\\',
   'fr_gram' => 'BerkeleyParser\\fra_sm5.gr',
   'fr_lm' => 'KenLM\\',
+  'google_key' => 'io3h54rp9ch3wruizwelhrv92ch',
+  'yandex_key' => 'uizwelhrv92chio3h54rp9ch3wr',
+  'bing_id' => 'rv92chio3h54rp9ch3wruizwelh',
+  'bing_se' => '3h54rp9ch3wruirv92chiozwelh',
+  'hugo_pw' => 'hugo@mailinator.com',
+  'hugo_em' => 'mysuperduperHugopassw0Rd',
 ) ;

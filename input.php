@@ -23,3 +23,4 @@
 	<input type="hidden" name="id" value="inputprocess"/>
 	<input style="margin-left:5px;" type="submit" class="btn btn-sm btn-default" value="Next!"/>
 </form>
+<br/><br/>

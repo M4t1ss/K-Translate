@@ -26,8 +26,8 @@
 	</div>
 	<div id="navbar" class="navbar-collapse collapse">
 	  <ul class="nav navbar-nav">
-		<li><a href="?id=input">Input translations to combine</a></li>
 		<li><a href="?id=api">Translate with online systems</a></li>
+		<li><a href="?id=input">Input translations to combine</a></li>
 		<li><a href="?id=settings">Settings</a></li>
 	  </ul>
 	</div><!--/.nav-collapse -->
@@ -42,7 +42,7 @@
     if (isset($_GET['id']) && in_array($_GET['id'], array('input','inputprocess','inputresult','api','apiresult','settings')))
       include $_GET['id'].".php";
     else
-      include "input.php";
+      include "api.php";
   ?>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

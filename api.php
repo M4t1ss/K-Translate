@@ -33,3 +33,4 @@
 	<input type="hidden" name="id" value="apiresult"/>
 	<input style="margin-left:5px;" type="submit" class="btn btn-sm btn-default" value="Translate!"/>
 </form>
+<br/><br/>

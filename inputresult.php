@@ -1,5 +1,15 @@
 ﻿<?php
+//Read configurations
 include('include/config.php');
+$config = MyConfig::read('include/settings.php');
+$en_gram 	= $config['en_gram'];
+$en_lm 		= $config['en_lm'];
+$lv_gram 	= $config['lv_gram'];
+$lv_lm 		= $config['lv_lm'];
+$de_gram 	= $config['de_gram'];
+$de_lm 		= $config['de_lm'];
+$fr_gram 	= $config['fr_gram'];
+$fr_lm 		= $config['fr_lm'];
 
 //Get input data
 if($_GET['mt1'] != ''){
@@ -17,15 +27,6 @@ if($_GET['mt4'] != ''){
 if($_GET['src'] != '')
 	$src = $_GET['src'];
 
-$config = MyConfig::read('include/settings.php');
-$en_gram 	= $config['en_gram'];
-$en_lm 		= $config['en_lm'];
-$lv_gram 	= $config['lv_gram'];
-$lv_lm 		= $config['lv_lm'];
-$de_gram 	= $config['de_gram'];
-$de_lm 		= $config['de_lm'];
-$fr_gram 	= $config['fr_gram'];
-$fr_lm 		= $config['fr_lm'];
 switch($_GET['srclang']){
 	case "English":
 		$grammarFile = $en_gram;
@@ -153,60 +154,60 @@ if(isset($parsed) && $parsed != ""){
 
 
 
-	// Choose output chunks
-	foreach($chunkVariants as $chunkVariant){
-		foreach($chunkVariant as $trChunk){
-			
-			// Query KenLM
-			$outputQ = shell_exec('query.bat "'.$trChunk.'" "'.$languageModelFile.'"');
-
-			$boomQ = explode("\n", $outputQ);
-			$perplexQ = $boomQ[5];
-			$perplexQ = str_replace("Perplexity including OOVs:	", "", $perplexQ);
-			$perplexQ = intval($perplexQ);
-			
-			$sentences[] = $trChunk;
-			$perplexities[] = $perplexQ;
-			
-		}
-		$selectedMT[] = array_keys($perplexities, min($perplexities))[0];
-		if(min($perplexities) == max($perplexities)){
-			$pplDiff[] = 1;
-		}else{
-			$pplDiff[] = (max($perplexities)-min($perplexities))/min($perplexities);
-		}
-		$best[] = $sentences[array_keys($perplexities, min($perplexities))[0]];
+// Choose output chunks
+foreach($chunkVariants as $chunkVariant){
+	foreach($chunkVariant as $trChunk){
 		
-		unset($sentences);
-		unset($perplexities);
-	}
+		// Query KenLM
+		$outputQ = shell_exec('query.bat "'.$trChunk.'" "'.$languageModelFile.'"');
 
-	echo "<br style='clear:both;'/><br style='clear:both;'/>";
-	echo "<b>Combined translation:</b><br/>";
-	echo "<div class='finalChunks'><ul>";
-	$i = 0;
-	foreach($best as $bestTr){
-		echo "<li style='background-color: ".$chunkColors[$i]."' >".$bestTr."</li>";
-		$i++;
+		$boomQ = explode("\n", $outputQ);
+		$perplexQ = $boomQ[5];
+		$perplexQ = str_replace("Perplexity including OOVs:	", "", $perplexQ);
+		$perplexQ = intval($perplexQ);
+		
+		$sentences[] = $trChunk;
+		$perplexities[] = $perplexQ;
+		
 	}
-	echo "</ul></div>";
-	echo "<br style='clear:both;'>";
-	echo "<div class='finalChunks srcConf'><ul>";
-	$i = 0;
-	foreach($best as $bestTr){
-		echo "<li style='background-color: ".$chunkColors[$i]."' >Source: MT".($selectedMT[$i]+1)."</li>";
-		$i++;
+	$selectedMT[] = array_keys($perplexities, min($perplexities))[0];
+	if(min($perplexities) == max($perplexities)){
+		$pplDiff[] = 1;
+	}else{
+		$pplDiff[] = (max($perplexities)-min($perplexities))/max($perplexities);
 	}
-	echo "</ul></div>";
-	echo "<br style='clear:both;'>";
-	echo "<div class='finalChunks srcConf'><ul>";
-	$i = 0;
-	foreach($best as $bestTr){
-		echo "<li style='background-color: ".$chunkColors[$i]."' >Confidence: ".(round($pplDiff[$i], 2)*100)."%</li>";
-		$i++;
-	}
-	echo "</ul></div>";
-	echo "<br style='clear:both;'>";
-	echo "<br style='clear:both;'>";
-	echo "<br style='clear:both;'>";
-?>
+	$best[] = $sentences[array_keys($perplexities, min($perplexities))[0]];
+	
+	unset($sentences);
+	unset($perplexities);
+}
+
+echo "<br style='clear:both;'/><br style='clear:both;'/>";
+echo "<b>Combined translation:</b><br/>";
+echo "<div class='finalChunks'><ul>";
+$i = 0;
+foreach($best as $bestTr){
+	echo "<li style='background-color: ".$chunkColors[$i]."' >".$bestTr."</li>";
+	$i++;
+}
+echo "</ul></div>";
+echo "<br style='clear:both;'>";
+echo "<div class='finalChunks srcConf'><ul>";
+$i = 0;
+foreach($best as $bestTr){
+	echo "<li style='background-color: ".$chunkColors[$i]."' >Source: MT".($selectedMT[$i]+1)."</li>";
+	$i++;
+}
+echo "</ul></div>";
+echo "<br style='clear:both;'>";
+echo "<div class='finalChunks srcConf'><ul>";
+$i = 0;
+foreach($best as $bestTr){
+	echo "<li style='background-color: ".$chunkColors[$i]."' >Confidence: ".(round($pplDiff[$i], 2)*100)."%</li>";
+	$i++;
+}
+echo "</ul></div>";
+echo "<br style='clear:both;'>";
+echo "<br style='clear:both;'>";
+echo "<br style='clear:both;'>";
+

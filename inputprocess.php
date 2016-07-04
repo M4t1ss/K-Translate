@@ -1,4 +1,11 @@
 <?php
+//Read configurations
+include('include/config.php');
+$config = MyConfig::read('include/settings.php');
+$en_gram 	= $config['en_gram'];
+$lv_gram 	= $config['lv_gram'];
+$de_gram 	= $config['de_gram'];
+$fr_gram 	= $config['fr_gram'];
 //Get input data
 if($_GET['src'] != '')
 	$src = $_GET['src'];
@@ -6,10 +13,24 @@ if($_GET['srclang'] != '')
 	$srclang = $_GET['srclang'];
 if($_GET['trglang'] != '')
 	$trglang = $_GET['trglang'];
+switch($srclang){
+	case "English":
+		$grammarFile = $en_gram;
+		break;
+	case "Latvian":
+		$grammarFile = $lv_gram;
+		break;
+	case "German":
+		$grammarFile = $de_gram;
+		break;
+	case "French":
+		$grammarFile = $fr_gram;
+		break;
+}
 
 //Parse input source sentence
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-	$output = shell_exec('exp.bat "'.$src.'"');
+	$output = shell_exec('exp.bat "'.$src.'" "'.$grammarFile.'"');
 	$boom = explode("\n", $output);
 	$parsed = $boom[4];
 } else {

@@ -1,19 +1,41 @@
 ﻿<?php
+
+
 //Get input data
-$sentences = array();
-if($_GET['mt1'] != '')
-	$sentences[] = $_GET['mt1'];
-if($_GET['mt2'] != '')
-	$sentences[] = $_GET['mt2'];
-if($_GET['mt3'] != '')
-	$sentences[] = $_GET['mt3'];
-if($_GET['mt4'] != '')
-	$sentences[] = $_GET['mt4'];
+if($_GET['mt1'] != ''){
+	$mt1Chunks = explode("\n", $_GET['mt1']);
+}
+if($_GET['mt2'] != ''){
+	$mt2Chunks = explode("\n", $_GET['mt2']);
+}
+if($_GET['mt3'] != ''){
+	$mt3Chunks = explode("\n", $_GET['mt3']);
+}
+if($_GET['mt4'] != ''){
+	$mt4Chunks = explode("\n", $_GET['mt4']);
+}
 if($_GET['src'] != '')
 	$src = $_GET['src'];
 
+$inputChunkCount = count(explode("\n", $_GET['mt1']));
+
+$chunkVariants = array();
+$chunkColors = array();
+for ($i = 0; $i < $inputChunkCount; $i++){
+	$chunkColors[] = 'rgba('.rand(1, 255).', '.rand(1, 255).', '.rand(1, 255).', 0.15)';
+	$chunkVariants[$i][] = $mt1Chunks[$i];
+	$chunkVariants[$i][] = $mt2Chunks[$i];
+	if(isset($mt3Chunks) && is_array($mt3Chunks))
+		$chunkVariants[$i][] = $mt3Chunks[$i];
+	if(isset($mt4Chunks) && is_array($mt4Chunks))
+		$chunkVariants[$i][] = $mt4Chunks[$i];
+}
+
+
+
 //Parse input source sentence
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+	$src = str_replace("\n", " ", $src);
 	$output = shell_exec('exp.bat "'.$src.'"');
 	$boom = explode("\n", $output);
 	$parsed = $boom[4];
@@ -78,7 +100,7 @@ if(isset($parsed) && $parsed != ""){
 
 	$finalChunks = array_reverse($finalChunks);
 
-	// Izdrukā teikuma gabalus
+	// Print the chunks
 	echo "<b>Chunks:</b><br/><div class='finalChunks'><ul>";
 	foreach($finalChunks as $finalChunk){
 		echo "<li>".$finalChunk."</li>";
@@ -87,16 +109,66 @@ if(isset($parsed) && $parsed != ""){
 	echo "<br style='clear:both;'/><br style='clear:both;'/>";
 
 	echo "<b>Tree:</b><br/>";
-	// Uzzīmē skaistu kociņu :)
+	// Draw a pretty tree :)
 	$rootNode->printTree($rootNode);
 }
 
-//Choose output chunks
+
+
+	// Choose output chunks
+	foreach($chunkVariants as $chunkVariant){
+		foreach($chunkVariant as $trChunk){
+			
+			// Query KenLM
+			$outputQ = shell_exec('query.bat "'.$trChunk.'"');
+
+			$boomQ = explode("\n", $outputQ);
+			$perplexQ = $boomQ[5];
+			$perplexQ = str_replace("Perplexity including OOVs:	", "", $perplexQ);
+			$perplexQ = intval($perplexQ);
+			
+			$sentences[] = $trChunk;
+			$perplexities[] = $perplexQ;
+			
+		}
+		$selectedMT[] = array_keys($perplexities, min($perplexities))[0];
+		if(min($perplexities) == max($perplexities)){
+			$pplDiff[] = 1;
+		}else{
+			$pplDiff[] = (max($perplexities)-min($perplexities))/min($perplexities);
+		}
+		$best[] = $sentences[array_keys($perplexities, min($perplexities))[0]];
+		
+		unset($sentences);
+		unset($perplexities);
+	}
 
 	echo "<br style='clear:both;'/><br style='clear:both;'/>";
 	echo "<b>Combined translation:</b><br/>";
 	echo "<div class='finalChunks'><ul>";
-	echo "<li>Preces tiek nogādātas ātri un efektīvi</li>";
-	echo "<li>no rūpnīcas pie lietotājiem, bieži vien arī citās valstīs.</li>";
+	$i = 0;
+	foreach($best as $bestTr){
+		echo "<li style='background-color: ".$chunkColors[$i]."' >".$bestTr."</li>";
+		$i++;
+	}
 	echo "</ul></div>";
+	echo "<br style='clear:both;'>";
+	echo "<div class='finalChunks srcConf'><ul>";
+	$i = 0;
+	foreach($best as $bestTr){
+		echo "<li style='background-color: ".$chunkColors[$i]."' >Source: MT".($selectedMT[$i]+1)."</li>";
+		$i++;
+	}
+	echo "</ul></div>";
+	echo "<br style='clear:both;'>";
+	echo "<div class='finalChunks srcConf'><ul>";
+	$i = 0;
+	foreach($best as $bestTr){
+		echo "<li style='background-color: ".$chunkColors[$i]."' >Confidence: ".(round($pplDiff[$i], 2)*100)."%</li>";
+		$i++;
+	}
+	echo "</ul></div>";
+	echo "<br style='clear:both;'>";
+	echo "<br style='clear:both;'>";
+	echo "<br style='clear:both;'>";
 ?>

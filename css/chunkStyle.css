@@ -114,3 +114,14 @@ right connector from last child*/
 	text-align: center;
 	position: relative;
 }
+
+.srcConf{
+	font-size: 11px;
+	margin-top: -5px;
+}
+
+.srcConf li{
+	width: 150px;
+}
+
+

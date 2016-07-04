@@ -1,5 +1,5 @@
 ﻿<?php
-
+include('include/config.php');
 
 //Get input data
 if($_GET['mt1'] != ''){
@@ -16,6 +16,44 @@ if($_GET['mt4'] != ''){
 }
 if($_GET['src'] != '')
 	$src = $_GET['src'];
+
+$config = MyConfig::read('include/settings.php');
+$en_gram 	= $config['en_gram'];
+$en_lm 		= $config['en_lm'];
+$lv_gram 	= $config['lv_gram'];
+$lv_lm 		= $config['lv_lm'];
+$de_gram 	= $config['de_gram'];
+$de_lm 		= $config['de_lm'];
+$fr_gram 	= $config['fr_gram'];
+$fr_lm 		= $config['fr_lm'];
+switch($_GET['srclang']){
+	case "English":
+		$grammarFile = $en_gram;
+		break;
+	case "Latvian":
+		$grammarFile = $lv_gram;
+		break;
+	case "German":
+		$grammarFile = $de_gram;
+		break;
+	case "French":
+		$grammarFile = $fr_gram;
+		break;
+}
+switch($_GET['trglang']){
+	case "English":
+		$languageModelFile = $en_lm;
+		break;
+	case "Latvian":
+		$languageModelFile = $lv_lm;
+		break;
+	case "German":
+		$languageModelFile = $de_lm;
+		break;
+	case "French":
+		$languageModelFile = $fr_lm;
+		break;
+}
 
 $inputChunkCount = count(explode("\n", $_GET['mt1']));
 
@@ -36,7 +74,7 @@ for ($i = 0; $i < $inputChunkCount; $i++){
 //Parse input source sentence
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	$src = str_replace("\n", " ", $src);
-	$output = shell_exec('exp.bat "'.$src.'"');
+	$output = shell_exec('exp.bat "'.$src.'" "'.$grammarFile.'"');
 	$boom = explode("\n", $output);
 	$parsed = $boom[4];
 } else {
@@ -120,7 +158,7 @@ if(isset($parsed) && $parsed != ""){
 		foreach($chunkVariant as $trChunk){
 			
 			// Query KenLM
-			$outputQ = shell_exec('query.bat "'.$trChunk.'"');
+			$outputQ = shell_exec('query.bat "'.$trChunk.'" "'.$languageModelFile.'"');
 
 			$boomQ = explode("\n", $outputQ);
 			$perplexQ = $boomQ[5];

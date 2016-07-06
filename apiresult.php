@@ -26,9 +26,9 @@ $de_lm 		= $config['de_lm'];
 $fr_gram 	= $config['fr_gram'];
 $fr_lm 		= $config['fr_lm'];
 //Get input data
-if($_GET['sentence'] != '')
-	$src = $_GET['sentence'];
-switch($_GET['srclang']){
+if($_POST['sentence'] != '')
+	$src = $_POST['sentence'];
+switch($_POST['srclang']){
 	case "English":
 		$grammarFile = $en_gram;
 		$from = "en";
@@ -46,7 +46,7 @@ switch($_GET['srclang']){
 		$from = "fr";
 		break;
 }
-switch($_GET['trglang']){
+switch($_POST['trglang']){
 	case "English":
 		$languageModelFile = $en_lm;
 		$to = "en";
@@ -68,6 +68,7 @@ switch($_GET['trglang']){
 //Parse input source sentence
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	$src = str_replace("\n", " ", $src);
+	$src = str_replace("&", "", $src);
 	$output = shell_exec('exp.bat "'.$src.'" "'.$grammarFile.'"');
 	$boom = explode("\n", $output);
 	$parsed = $boom[4];
@@ -149,19 +150,19 @@ if(isset($parsed) && $parsed != ""){
 $mt1Chunks = $mt2Chunks = $mt3Chunks = $mt4Chunks = array();
 foreach($finalChunks as $finalChunk){
 	$finalChunk;
-	if(isset($_GET['bing']) && $_GET['bing'] == 'on'){
+	if(isset($_POST['bing']) && $_POST['bing'] == 'on'){
 		$mt1Chunks[] = translateWithBing($from,$to,$finalChunk);
 		$mtNames[] = "Bing";
 	}
-	if(isset($_GET['google']) && $_GET['google'] == 'on'){
+	if(isset($_POST['google']) && $_POST['google'] == 'on'){
 		$mt2Chunks[] = translateWithGoogle($from,$to,$finalChunk);
 		$mtNames[] = "Google";
 	}
-	if(isset($_GET['hugo']) && $_GET['hugo'] == 'on'){
+	if(isset($_POST['hugo']) && $_POST['hugo'] == 'on'){
 		$mt3Chunks[] = translateWithLetsMT($finalChunk);
 		$mtNames[] = "Hugo";
 	}
-	if(isset($_GET['yandex']) && $_GET['yandex'] == 'on'){
+	if(isset($_POST['yandex']) && $_POST['yandex'] == 'on'){
 		$mt4Chunks[] = translateWithYandex($from,$to,$finalChunk);
 		$mtNames[] = "Yandex";
 	}

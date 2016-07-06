@@ -1,4 +1,4 @@
-﻿<form action="?">
+﻿<form action="?id=apiresult" method="post">
 	<div style="float: left; margin-left:5px;">
 		Source language:<br/>
 		<select class="form-control" name="srclang" />
@@ -30,7 +30,6 @@
 	</div>
 
 	<br style="clear: both;"/>
-	<input type="hidden" name="id" value="apiresult"/>
 	<input style="margin-left:5px;" type="submit" class="btn btn-sm btn-default" value="Translate!"/>
 </form>
 <br/><br/>

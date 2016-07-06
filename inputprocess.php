@@ -7,12 +7,12 @@ $lv_gram 	= $config['lv_gram'];
 $de_gram 	= $config['de_gram'];
 $fr_gram 	= $config['fr_gram'];
 //Get input data
-if($_GET['src'] != '')
-	$src = $_GET['src'];
-if($_GET['srclang'] != '')
-	$srclang = $_GET['srclang'];
-if($_GET['trglang'] != '')
-	$trglang = $_GET['trglang'];
+if($_POST['src'] != '')
+	$src = $_POST['src'];
+if($_POST['srclang'] != '')
+	$srclang = $_POST['srclang'];
+if($_POST['trglang'] != '')
+	$trglang = $_POST['trglang'];
 switch($srclang){
 	case "English":
 		$grammarFile = $en_gram;
@@ -96,7 +96,7 @@ if(isset($parsed) && $parsed != ""){
 
 }
 ?>
-<form action="?">
+<form action="?id=inputresult" method="post">
 	<div style="float: left; margin-left:5px;">
 		Source language:<br/>
 		<select class="form-control" name="srclang"/>
@@ -158,7 +158,6 @@ if(isset($parsed) && $parsed != ""){
 	</div>
 
 	<br style="clear: both;"/>
-	<input type="hidden" name="id" value="inputresult"/>
 	<input style="margin-left:5px;" type="submit" class="btn btn-sm btn-default" value="Combine!"/>
 </form>
 <br/><br/>

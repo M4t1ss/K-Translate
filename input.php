@@ -1,4 +1,4 @@
-﻿<form action="?">
+﻿<form action="?id=inputprocess" method="post">
 	<div style="float: left; margin-left:5px;">
 		Source language:<br/>
 		<select class="form-control" name="srclang" />
@@ -20,7 +20,6 @@
 	</div>
 
 	<br style="clear: both;"/>
-	<input type="hidden" name="id" value="inputprocess"/>
 	<input style="margin-left:5px;" type="submit" class="btn btn-sm btn-default" value="Next!"/>
 </form>
 <br/><br/>

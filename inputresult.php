@@ -12,22 +12,22 @@ $fr_gram 	= $config['fr_gram'];
 $fr_lm 		= $config['fr_lm'];
 
 //Get input data
-if($_GET['mt1'] != ''){
-	$mt1Chunks = explode("\n", $_GET['mt1']);
+if($_POST['mt1'] != ''){
+	$mt1Chunks = explode("\n", $_POST['mt1']);
 }
-if($_GET['mt2'] != ''){
-	$mt2Chunks = explode("\n", $_GET['mt2']);
+if($_POST['mt2'] != ''){
+	$mt2Chunks = explode("\n", $_POST['mt2']);
 }
-if($_GET['mt3'] != ''){
-	$mt3Chunks = explode("\n", $_GET['mt3']);
+if($_POST['mt3'] != ''){
+	$mt3Chunks = explode("\n", $_POST['mt3']);
 }
-if($_GET['mt4'] != ''){
-	$mt4Chunks = explode("\n", $_GET['mt4']);
+if($_POST['mt4'] != ''){
+	$mt4Chunks = explode("\n", $_POST['mt4']);
 }
-if($_GET['src'] != '')
-	$src = $_GET['src'];
+if($_POST['src'] != '')
+	$src = $_POST['src'];
 
-switch($_GET['srclang']){
+switch($_POST['srclang']){
 	case "English":
 		$grammarFile = $en_gram;
 		break;
@@ -41,7 +41,7 @@ switch($_GET['srclang']){
 		$grammarFile = $fr_gram;
 		break;
 }
-switch($_GET['trglang']){
+switch($_POST['trglang']){
 	case "English":
 		$languageModelFile = $en_lm;
 		break;
@@ -56,7 +56,7 @@ switch($_GET['trglang']){
 		break;
 }
 
-$inputChunkCount = count(explode("\n", $_GET['mt1']));
+$inputChunkCount = count(explode("\n", $_POST['mt1']));
 
 $chunkVariants = array();
 $chunkColors = array();
